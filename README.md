@@ -71,6 +71,24 @@ flowchart LR
 
 ---
 
+## 🎯 Results
+
+<table>
+  <tr>
+    <td><img src="app/static/images/result1.png" width="100%"/></td>
+    <td><img src="app/static/images/result2.png" width="100%"/></td>
+  </tr>
+  <tr>
+    <td><img src="app/static/images/result3.png" width="100%"/></td>
+    <td><img src="app/static/images/result4.png" width="100%"/></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="app/static/images/result5.png" width="100%"/></td>
+  </tr>
+</table>
+
+---
+
 ## Dataset
 
 | Source | Images | Annotation | Focus |
