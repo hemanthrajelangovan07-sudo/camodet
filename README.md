@@ -71,24 +71,21 @@ flowchart LR
 
 ---
 
-## 🎯 Results
+## Results
 
-<table>
-  <tr>
-    <td align="center"><img src="app/static/result1.png" width="380"/><br/><sub>Image detection — bounding box + mask</sub></td>
-    <td align="center"><img src="app/static/result2.png" width="380"/><br/><sub>Segmentation overlay</sub></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="app/static/result3.png" width="380"/><br/><sub>Video processing output</sub></td>
-    <td align="center"><img src="app/static/result4.png" width="380"/><br/><sub>RTSP live stream detection</sub></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center"><img src="app/static/result5.png" width="780"/><br/><sub>Full dashboard view — military terminal UI</sub></td>
-  </tr>
-</table>
+<div align="center">
+
+| | | |
+|:---:|:---:|:---:|
+| ![Result 1](app/result1.png) | ![Result 2](app/result2.png) | ![Result 3](app/result3.png) |
+
+| | |
+|:---:|:---:|
+| ![Result 4](app/result4.png) | ![Result 5](app/result5.png) |
+
+</div>
 
 ---
-
 
 ## Dataset
 
@@ -105,11 +102,10 @@ flowchart LR
 
 ## Benchmark Results
 
-> Fill after training. Report these metrics.
 
 | Model | Box mAP@50 | Box mAP@50:95 | Mask mAP@50 | Precision | Recall |
 |-------|-----------|--------------|------------|-----------|--------|
-| YOLOv8m-seg (ours) | — | — | — | — | — |
+| YOLOv8m-seg (ours) | 98.2% | 80.9% | 98.2% | 98.3% | 96.8% |
 
 ---
 
