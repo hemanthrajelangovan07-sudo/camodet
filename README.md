@@ -75,19 +75,20 @@ flowchart LR
 
 <table>
   <tr>
-    <td align="center"><img src="app/static/images/result1.png" width="380"/><br/><sub>Image detection — bounding box + mask</sub></td>
-    <td align="center"><img src="app/static/images/result2.png" width="380"/><br/><sub>Segmentation overlay</sub></td>
+    <td align="center"><img src="app/static/result1.png" width="380"/><br/><sub>Image detection — bounding box + mask</sub></td>
+    <td align="center"><img src="app/static/result2.png" width="380"/><br/><sub>Segmentation overlay</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="app/static/images/result3.png" width="380"/><br/><sub>Video processing output</sub></td>
-    <td align="center"><img src="app/static/images/result4.png" width="380"/><br/><sub>RTSP live stream detection</sub></td>
+    <td align="center"><img src="app/static/result3.png" width="380"/><br/><sub>Video processing output</sub></td>
+    <td align="center"><img src="app/static/result4.png" width="380"/><br/><sub>RTSP live stream detection</sub></td>
   </tr>
   <tr>
-    <td colspan="2" align="center"><img src="app/static/images/result5.png" width="780"/><br/><sub>Full dashboard view — military terminal UI</sub></td>
+    <td colspan="2" align="center"><img src="app/static/result5.png" width="780"/><br/><sub>Full dashboard view — military terminal UI</sub></td>
   </tr>
 </table>
 
 ---
+
 
 ## Dataset
 
