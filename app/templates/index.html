@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CamouflageNet · Surveillance Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">
+        <span class="logo-hex">⬡</span>
+        <span class="logo-text">CAMOUFLAGE<span class="logo-accent">NET</span></span>
+      </div>
+      <div class="sys-status">
+        <span class="status-dot" id="sys-dot"></span>
+        <span class="status-label" id="sys-label">SYSTEM READY</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="hud-badge" id="badge-fps">── FPS</span>
+      <span class="hud-badge alert" id="badge-det">0 TARGETS</span>
+      <span class="clock" id="clock">00:00:00</span>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <aside class="sidebar">
+
+      <p class="sidebar-heading">INPUT SOURCE</p>
+      <nav class="source-nav">
+        <button class="src-btn active" data-src="image"   >📷 IMAGE</button>
+        <button class="src-btn"        data-src="video"   >🎬 VIDEO</button>
+        <button class="src-btn"        data-src="webcam"  >🔴 WEBCAM</button>
+        <button class="src-btn"        data-src="rtsp"    >📡 RTSP</button>
+        <button class="src-btn"        data-src="ip"      >🌐 IP CAM</button>
+        <button class="src-btn"        data-src="rtmp"    >🚁 RTMP</button>
+        <button class="src-btn"        data-src="network" >🛰 NETWORK</button>
+      </nav>
+
+      <div class="src-panel" id="panel-image">
+        <div class="drop-zone" id="dz-image">
+          <input type="file" id="file-image" accept="image/*" hidden>
+          <div class="dz-inner">
+            <span class="dz-icon">⬡</span>
+            <span>DROP IMAGE OR CLICK</span>
+            <span class="dz-sub">JPG · PNG · BMP · WEBP</span>
+          </div>
+        </div>
+        <div class="conf-row">
+          <label>CONF <span id="val-conf-img">0.25</span></label>
+          <input type="range" id="conf-img" min="5" max="95" value="25" step="5">
+        </div>
+        <button class="btn-run" id="btn-detect-img">RUN ANALYSIS</button>
+      </div>
+
+      <div class="src-panel hidden" id="panel-video">
+        <div class="drop-zone" id="dz-video">
+          <input type="file" id="file-video" accept="video/*" hidden>
+          <div class="dz-inner">
+            <span class="dz-icon">▶</span>
+            <span>DROP VIDEO OR CLICK</span>
+            <span class="dz-sub">MP4 · AVI · MOV · MKV</span>
+          </div>
+        </div>
+        <button class="btn-run" id="btn-detect-vid">PROCESS VIDEO</button>
+        <div class="progress-bar hidden" id="vid-progress">
+          <div class="progress-fill" id="vid-fill"></div>
+          <span id="vid-label">PROCESSING…</span>
+        </div>
+      </div>
+
+      <div class="src-panel hidden" id="panel-webcam">
+        <p class="src-info">DEVICE 0 — local webcam</p>
+        <button class="btn-run"  id="btn-start-webcam">▶ ENGAGE</button>
+        <button class="btn-stop hidden" id="btn-stop-webcam">■ DISENGAGE</button>
+      </div>
+
+      <div class="src-panel hidden" id="panel-rtsp">
+        <label class="url-label">RTSP URL</label>
+        <input class="url-input" id="url-rtsp" type="text"
+               placeholder="rtsp://192.168.1.1:554/stream1">
+        <button class="btn-run"  id="btn-start-rtsp">▶ CONNECT</button>
+        <button class="btn-stop hidden" id="btn-stop-rtsp">■ DISCONNECT</button>
+      </div>
+
+      <div class="src-panel hidden" id="panel-ip">
+        <label class="url-label">CAMERA URL</label>
+        <input class="url-input" id="url-ip" type="text"
+               placeholder="http://192.168.1.100:8080/video">
+        <button class="btn-run"  id="btn-start-ip">▶ CONNECT</button>
+        <button class="btn-stop hidden" id="btn-stop-ip">■ DISCONNECT</button>
+      </div>
+
+      <div class="src-panel hidden" id="panel-rtmp">
+        <label class="url-label">RTMP PULL URL</label>
+        <input class="url-input" id="url-rtmp" type="text"
+               placeholder="rtmp://localhost/live/drone1">
+        <p class="src-hint">Configure drone to push to this RTMP address, then pull here.</p>
+        <button class="btn-run"  id="btn-start-rtmp">▶ CONNECT</button>
+        <button class="btn-stop hidden" id="btn-stop-rtmp">■ DISCONNECT</button>
+      </div>
+
+      <div class="src-panel hidden" id="panel-network">
+        <label class="url-label">FEED URL</label>
+        <input class="url-input" id="url-network" type="text"
+               placeholder="rtsp://surveillance.feed/channel/1">
+        <button class="btn-run"  id="btn-start-network">▶ CONNECT</button>
+        <button class="btn-stop hidden" id="btn-stop-network">■ DISCONNECT</button>
+      </div>
+
+      <div class="settings-block">
+        <p class="sidebar-heading" style="margin-top:0">PARAMETERS</p>
+
+        <div class="setting-row">
+          <span>CONFIDENCE</span>
+          <input type="range" id="s-conf" min="5" max="95" value="25" step="5">
+          <span id="sv-conf">0.25</span>
+        </div>
+        <div class="setting-row">
+          <span>IoU THRESH</span>
+          <input type="range" id="s-iou" min="5" max="95" value="45" step="5">
+          <span id="sv-iou">0.45</span>
+        </div>
+        <div class="toggle-row">
+          <span>ESRGAN ENHANCE</span>
+          <div class="toggle" id="toggle-esrgan" data-on="false">
+            <div class="toggle-thumb"></div>
+          </div>
+        </div>
+        <div class="toggle-row">
+          <span>AUTO-LOG</span>
+          <div class="toggle active" id="toggle-log" data-on="true">
+            <div class="toggle-thumb"></div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <main class="feed-area">
+      <div class="feed-header">
+        <span class="feed-title" id="feed-title">◈ AWAITING SOURCE SELECTION</span>
+        <div class="feed-controls">
+          <button class="ctrl-btn" id="btn-screenshot" title="Save screenshot">⬡</button>
+          <button class="ctrl-btn" id="btn-fullscreen" title="Toggle fullscreen">⛶</button>
+        </div>
+      </div>
+
+      <div class="feed-wrap" id="feed-wrap">
+
+        <div class="placeholder" id="placeholder">
+          <div class="radar-container">
+            <div class="radar-ring r1"></div>
+            <div class="radar-ring r2"></div>
+            <div class="radar-ring r3"></div>
+            <div class="radar-crosshair"></div>
+          </div>
+          <p class="placeholder-text">SELECT AN INPUT SOURCE<br>TO BEGIN SURVEILLANCE</p>
+          <p class="placeholder-sub">YOLOv8m-seg · Real-ESRGAN · Multi-source streaming</p>
+        </div>
+
+        <img id="live-feed" class="feed-img hidden" alt="Live detection feed">
+
+        <img id="result-img" class="feed-img hidden" alt="Detection result">
+
+        <video id="result-vid" class="feed-img hidden" controls playsinline></video>
+
+        <div class="feed-loading hidden" id="feed-loading">
+          <div class="spinner"></div>
+          <span id="loading-text">ANALYSING…</span>
+        </div>
+
+      </div>
+    </main>
+
+    <aside class="stats-panel">
+
+      <p class="sidebar-heading">METRICS</p>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <span class="metric-label">LIVE TARGETS</span>
+          <span class="metric-val" id="m-current">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">SESSION TOTAL</span>
+          <span class="metric-val" id="m-total">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">AVG CONFIDENCE</span>
+          <span class="metric-val" id="m-conf">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">INFERENCE FPS</span>
+          <span class="metric-val" id="m-fps">0</span>
+        </div>
+      </div>
+
+      <p class="sidebar-heading" style="margin-top:16px">DETECTIONS</p>
+      <div class="det-list" id="det-list">
+        <p class="no-data">No detections</p>
+      </div>
+
+      <div class="log-header">
+        <p class="sidebar-heading" style="margin:0">EVENT LOG</p>
+        <button class="tiny-btn" id="btn-clear-log">CLEAR</button>
+      </div>
+      <div class="event-log" id="event-log">
+        <div class="log-entry placeholder-log">Awaiting events…</div>
+      </div>
+
+    </aside>
+  </div>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
